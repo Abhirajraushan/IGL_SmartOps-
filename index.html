@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IGL SmartOps - Premium Dashboard</title>
+    <title>IGL SmartOps | Premium Operations Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -21,6 +21,8 @@
             --dark: #212529;
             --gray: #6c757d;
             --light-gray: #e9ecef;
+            --gold: #FFD700;
+            --silver: #C0C0C0;
             --sidebar-width: 280px;
             --sidebar-collapsed: 80px;
         }
@@ -33,8 +35,8 @@
         }
         
         body {
-            background-color: #f5f7fb;
-            color: var(--dark);
+            background: linear-gradient(135deg, #0f2a4a 0%, #1a3a63 100%);
+            color: var(--light);
             overflow-x: hidden;
             display: flex;
             min-height: 100vh;
@@ -43,14 +45,15 @@
         /* ========== SIDEBAR ========== */
         .sidebar {
             width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--primary-dark), var(--primary));
+            background: rgba(15, 42, 74, 0.95);
             color: white;
             padding: 20px 0;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            box-shadow: 5px 0 25px rgba(0,0,0,0.3);
             z-index: 100;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.215, 0.610, 0.355, 1);
             position: relative;
             overflow: hidden;
+            border-right: 1px solid rgba(255,255,255,0.05);
         }
         
         .sidebar.collapsed {
@@ -61,9 +64,9 @@
             position: absolute;
             right: 15px;
             top: 15px;
-            background: rgba(255,255,255,0.2);
-            width: 30px;
-            height: 30px;
+            background: rgba(255,255,255,0.15);
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -71,10 +74,12 @@
             cursor: pointer;
             transition: all 0.3s;
             z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         
         .sidebar-toggle:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.05);
         }
         
         .sidebar-menu {
@@ -113,16 +118,17 @@
         }
         
         .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--accent);
-            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 22px;
             flex-shrink: 0;
             transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .logo-text {
@@ -136,9 +142,12 @@
         }
         
         .logo-text h1 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
             white-space: nowrap;
+            background: linear-gradient(90deg, #fff 0%, #a7ffeb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .logo-text span {
@@ -150,10 +159,11 @@
             font-size: 0.8rem;
             opacity: 0.8;
             white-space: nowrap;
+            color: #a7ffeb;
         }
         
         .nav-item {
-            padding: 12px 20px;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             gap: 15px;
@@ -162,12 +172,12 @@
             position: relative;
             overflow: hidden;
             margin: 5px 15px;
-            border-radius: 10px;
+            border-radius: 12px;
         }
         
         .sidebar.collapsed .nav-item {
             justify-content: center;
-            padding: 12px 0;
+            padding: 14px 0;
             margin: 5px 10px;
         }
         
@@ -212,11 +222,13 @@
             font-size: 1.1rem;
             transition: all 0.3s;
             flex-shrink: 0;
+            color: #a7ffeb;
         }
         
         .nav-item span {
             transition: all 0.3s;
             white-space: nowrap;
+            font-weight: 500;
         }
         
         .sidebar.collapsed .nav-item span {
@@ -229,9 +241,10 @@
             background: var(--danger);
             color: white;
             border-radius: 20px;
-            padding: 2px 8px;
-            font-size: 0.7rem;
+            padding: 4px 10px;
+            font-size: 0.75rem;
             font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
         .sidebar.collapsed .nav-badge {
@@ -245,9 +258,10 @@
         .submenu {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.4s cubic-bezier(0.215, 0.610, 0.355, 1);
             background: rgba(0,0,0,0.1);
-            border-radius: 0 0 10px 10px;
+            border-radius: 0 0 12px 12px;
+            margin: 0 15px;
         }
         
         .submenu.active {
@@ -255,7 +269,7 @@
         }
         
         .sub-item {
-            padding: 10px 20px 10px 55px;
+            padding: 12px 20px 12px 55px;
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.3s;
@@ -265,7 +279,7 @@
         }
         
         .sidebar.collapsed .sub-item {
-            padding: 10px 20px 10px 30px;
+            padding: 12px 20px 12px 30px;
         }
         
         .sub-item:hover {
@@ -275,7 +289,8 @@
         .sub-item::before {
             content: '•';
             color: var(--accent);
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            line-height: 0;
         }
         
         .sub-item.active {
@@ -300,15 +315,16 @@
         }
         
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
             flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .user-info {
@@ -324,12 +340,14 @@
         .user-name {
             font-weight: 600;
             white-space: nowrap;
+            color: #fff;
         }
         
         .user-role {
             font-size: 0.8rem;
             opacity: 0.8;
             white-space: nowrap;
+            color: #a7ffeb;
         }
         
         /* ========== MAIN CONTENT ========== */
@@ -338,8 +356,8 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            transition: all 0.3s;
+            gap: 25px;
+            transition: all 0.4s cubic-bezier(0.215, 0.610, 0.355, 1);
         }
         
         .sidebar.collapsed ~ .main-content {
@@ -354,123 +372,150 @@
         }
         
         .header h2 {
-            font-size: 1.8rem;
-            color: var(--primary);
+            font-size: 1.9rem;
+            background: linear-gradient(90deg, #fff 0%, #a7ffeb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-weight: 700;
         }
         
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
         
         .time-filter {
             display: flex;
-            gap: 10px;
-            background: white;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
             border-radius: 30px;
-            padding: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
         }
         
         .time-filter button {
-            padding: 8px 16px;
+            padding: 10px 18px;
             background: transparent;
             border: none;
             border-radius: 20px;
             cursor: pointer;
             font-weight: 500;
             transition: all 0.2s;
+            color: rgba(255,255,255,0.8);
         }
         
         .time-filter button.active {
-            background: var(--primary);
+            background: var(--primary-light);
             color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .time-filter button:hover:not(.active) {
+            background: rgba(255,255,255,0.1);
         }
         
         .search-bar {
             display: flex;
             align-items: center;
-            background: white;
+            background: rgba(255,255,255,0.1);
             border-radius: 30px;
-            padding: 8px 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 10px 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        
+        .search-bar:hover {
+            background: rgba(255,255,255,0.15);
         }
         
         .search-bar input {
             border: none;
             outline: none;
-            padding: 0 10px;
+            padding: 0 12px;
             min-width: 200px;
+            background: transparent;
+            color: white;
+            font-size: 0.95rem;
+        }
+        
+        .search-bar input::placeholder {
+            color: rgba(255,255,255,0.6);
         }
         
         .search-bar i {
-            color: var(--gray);
+            color: rgba(255,255,255,0.6);
         }
         
         /* Dashboard Grid */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 20px;
+            gap: 25px;
         }
         
         /* Card Styles */
         .card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            padding: 20px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: rgba(26, 58, 99, 0.6);
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            padding: 25px;
+            transition: transform 0.4s, box-shadow 0.4s;
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
         }
         
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            background: rgba(26, 58, 99, 0.7);
         }
         
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
         .card-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 600;
-            color: var(--primary);
+            color: white;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         
         .card-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
         
         .card-action-btn {
-            width: 30px;
-            height: 30px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--light-gray);
-            color: var(--gray);
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
             cursor: pointer;
             transition: all 0.3s;
         }
         
         .card-action-btn:hover {
-            background: var(--primary);
+            background: var(--accent);
             color: white;
+            transform: scale(1.1);
         }
         
         /* KPI Cards */
@@ -485,15 +530,16 @@
         }
         
         .kpi-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            margin-bottom: 15px;
+            font-size: 24px;
+            margin-bottom: 18px;
             color: white;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
         }
         
         .kpi-1 .kpi-icon { background: linear-gradient(135deg, var(--accent), var(--accent-light)); }
@@ -502,26 +548,29 @@
         .kpi-4 .kpi-icon { background: linear-gradient(135deg, var(--danger), #E57373); }
         
         .kpi-value {
-            font-size: 2rem;
+            font-size: 2.4rem;
             font-weight: 700;
-            margin: 5px 0;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            margin: 8px 0;
+            background: linear-gradient(135deg, #fff, #a7ffeb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
         .kpi-label {
-            color: var(--gray);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
+            margin-bottom: 12px;
         }
         
         .kpi-trend {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
+            gap: 6px;
+            font-size: 1rem;
             font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
         }
         
         .trend-up {
@@ -534,7 +583,7 @@
         
         /* Chart Container */
         .chart-container {
-            height: 300px;
+            height: 320px;
             position: relative;
         }
         
@@ -542,16 +591,16 @@
         .alert-panel {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 18px;
         }
         
         .alert-item {
-            padding: 15px;
-            border-radius: 10px;
+            padding: 18px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: var(--light);
+            gap: 18px;
+            background: rgba(255,255,255,0.05);
             transition: all 0.3s;
             border-left: 4px solid var(--danger);
         }
@@ -570,19 +619,21 @@
         
         .alert-item:hover {
             transform: translateX(5px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.08);
         }
         
         .alert-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 20px;
             color: white;
             flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .alert-danger .alert-icon { background: var(--danger); }
@@ -596,17 +647,18 @@
         
         .alert-title {
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            color: white;
         }
         
         .alert-desc {
-            font-size: 0.9rem;
-            color: var(--gray);
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
         }
         
         .alert-time {
-            font-size: 0.8rem;
-            color: var(--gray);
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
             white-space: nowrap;
         }
         
@@ -616,10 +668,10 @@
         }
         
         .event-item {
-            padding: 15px 0;
-            border-bottom: 1px solid var(--light-gray);
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             display: flex;
-            gap: 15px;
+            gap: 18px;
             transition: all 0.3s;
         }
         
@@ -636,23 +688,24 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: var(--light);
-            border-radius: 10px;
-            padding: 10px;
-            min-width: 70px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 12px;
+            min-width: 80px;
             flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .event-day {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: var(--primary);
+            color: white;
         }
         
         .event-month {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            color: var(--gray);
+            color: rgba(255,255,255,0.7);
         }
         
         .event-details {
@@ -661,66 +714,70 @@
         
         .event-title {
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: white;
         }
         
         .event-desc {
-            font-size: 0.9rem;
-            color: var(--gray);
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
         }
         
         .event-badge {
             display: inline-block;
-            padding: 3px 8px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            margin-top: 5px;
+            margin-top: 8px;
         }
         
         .event-badge.primary {
-            background: rgba(26, 58, 99, 0.1);
-            color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
         }
         
         .event-badge.accent {
-            background: rgba(76, 175, 80, 0.1);
-            color: var(--accent-dark);
+            background: rgba(76, 175, 80, 0.2);
+            color: var(--accent);
         }
         
         /* Action Plan */
         .action-plan {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 18px;
         }
         
         .task {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 15px;
-            border-radius: 10px;
-            background: var(--light);
+            gap: 18px;
+            padding: 18px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.05);
             transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
         .task:hover {
             transform: translateX(5px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.08);
         }
         
         .task-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 20px;
             color: white;
             background: linear-gradient(135deg, var(--accent), var(--accent-light));
             flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .task-info {
@@ -729,47 +786,53 @@
         
         .task-title {
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            color: white;
         }
         
         .task-desc {
-            font-size: 0.9rem;
-            color: var(--gray);
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
         }
         
         .task-time {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
-            color: var(--primary);
+            color: var(--accent);
             white-space: nowrap;
         }
         
         /* Zone Selector */
         .zone-selector {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
         
         .zone-btn {
-            padding: 8px 20px;
-            background: white;
-            border: 1px solid var(--light-gray);
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 30px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             transition: all 0.2s;
+            color: rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .zone-btn.active {
-            background: var(--primary);
+            background: var(--primary-light);
             color: white;
-            border-color: var(--primary);
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         
-        .zone-btn:hover {
-            background: var(--light-gray);
+        .zone-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.15);
         }
         
         /* Grid Sizes */
@@ -817,7 +880,7 @@
             
             .header {
                 flex-direction: column;
-                gap: 15px;
+                gap: 18px;
                 align-items: flex-start;
             }
             
@@ -834,19 +897,21 @@
         /* Mobile Menu Button */
         .mobile-menu-btn {
             display: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: var(--primary);
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: var(--primary-light);
             color: white;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .mobile-menu-btn:hover {
-            background: var(--primary-dark);
+            background: var(--primary);
+            transform: scale(1.05);
         }
         
         /* Tooltip for collapsed sidebar */
@@ -855,14 +920,15 @@
             left: calc(100% + 15px);
             background: var(--dark);
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
             transition: all 0.3s;
             z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
         .nav-item .tooltip::before {
@@ -873,9 +939,9 @@
             transform: translateY(-50%);
             width: 0;
             height: 0;
-            border-top: 5px solid transparent;
-            border-bottom: 5px solid transparent;
-            border-right: 5px solid var(--dark);
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 6px solid var(--dark);
         }
         
         .sidebar.collapsed .nav-item:hover .tooltip {
@@ -885,12 +951,12 @@
         
         /* Animation */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .card {
-            animation: fadeIn 0.5s ease forwards;
+            animation: fadeIn 0.6s ease forwards;
         }
         
         .card:nth-child(1) { animation-delay: 0.1s; }
@@ -902,11 +968,12 @@
         
         /* Supply Map Styles */
         .map-container {
-            height: 400px;
-            background: linear-gradient(to right, #e0eafc, #cfdef3);
-            border-radius: 10px;
+            height: 420px;
+            background: linear-gradient(to right, #0d253f, #1a3a63);
+            border-radius: 14px;
             position: relative;
             overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
         }
         
         .map-overlay {
@@ -915,68 +982,107 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80') center/cover;
-            opacity: 0.2;
+            background: linear-gradient(135deg, rgba(10, 32, 60, 0.7), rgba(26, 58, 99, 0.7));
+        }
+        
+        .map-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
         
         .map-point {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 16px;
+            height: 16px;
             background: var(--danger);
             border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.5);
+            border: 3px solid white;
+            box-shadow: 0 0 0 4px rgba(244, 67, 54, 0.5);
             cursor: pointer;
             transition: all 0.3s;
+            z-index: 10;
         }
         
         .map-point:hover {
-            transform: scale(1.5);
+            transform: scale(1.8);
+            z-index: 20;
         }
         
         .map-point:nth-child(1) { top: 30%; left: 25%; }
-        .map-point:nth-child(2) { top: 45%; left: 40%; background: var(--warning); }
-        .map-point:nth-child(3) { top: 60%; left: 55%; background: var(--accent); }
-        .map-point:nth-child(4) { top: 35%; left: 70%; background: var(--info); }
+        .map-point:nth-child(2) { top: 45%; left: 40%; background: var(--warning); box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.5); }
+        .map-point:nth-child(3) { top: 60%; left: 55%; background: var(--accent); box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.5); }
+        .map-point:nth-child(4) { top: 35%; left: 70%; background: var(--info); box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.5); }
         
         .map-point::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 20px;
-            height: 20px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background: inherit;
             opacity: 0.4;
             transform: translate(-50%, -50%);
             animation: pulse 2s infinite;
+            z-index: -1;
         }
         
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
-            70% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+        }
+        
+        .map-label {
+            position: absolute;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            white-space: nowrap;
+            z-index: 30;
+            transform: translateY(10px);
+            backdrop-filter: blur(5px);
+        }
+        
+        .map-point:hover .map-label {
+            opacity: 1;
+            transform: translateY(-40px);
         }
         
         .map-legend {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
         
         .map-legend-item {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 0.85rem;
+            gap: 8px;
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.08);
+            padding: 8px 16px;
+            border-radius: 30px;
         }
         
         .legend-color {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
         }
         
@@ -984,6 +1090,113 @@
         .legend-2 { background: var(--warning); }
         .legend-3 { background: var(--accent); }
         .legend-4 { background: var(--info); }
+        
+        /* All Zones Panel */
+        .all-zones-panel {
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .zone-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+        }
+        
+        .zone-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.3s;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .zone-card.critical {
+            border-left-color: var(--danger);
+        }
+        
+        .zone-card.warning {
+            border-left-color: var(--warning);
+        }
+        
+        .zone-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.12);
+        }
+        
+        .zone-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .zone-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .zone-name {
+            font-weight: 600;
+            color: white;
+            flex: 1;
+        }
+        
+        .zone-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-normal {
+            background: rgba(76, 175, 80, 0.2);
+            color: var(--accent);
+        }
+        
+        .status-warning {
+            background: rgba(255, 152, 0, 0.2);
+            color: var(--warning);
+        }
+        
+        .status-critical {
+            background: rgba(244, 67, 54, 0.2);
+            color: var(--danger);
+        }
+        
+        .zone-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+        }
     </style>
 </head>
 <body>
@@ -999,7 +1212,7 @@
             </div>
             <div class="logo-text">
                 <h1>IGL <span>SmartOps</span></h1>
-                <p>AI-Powered Operations</p>
+                <p>Premium Operations Suite</p>
             </div>
         </div>
         
@@ -1069,7 +1282,7 @@
         
         <div class="user-profile">
             <div class="user-avatar">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user-shield"></i>
             </div>
             <div class="user-info">
                 <div class="user-name">Operator</div>
@@ -1090,7 +1303,7 @@
             <div class="header-actions">
                 <div class="search-bar">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search...">
+                    <input type="text" placeholder="Search operations...">
                 </div>
                 
                 <div class="time-filter">
@@ -1172,11 +1385,26 @@
                     </div>
                 </div>
                 <div class="zone-selector">
-                    <div class="zone-btn active">All Zones</div>
-                    <div class="zone-btn">North Delhi</div>
-                    <div class="zone-btn">South Delhi</div>
-                    <div class="zone-btn">East Delhi</div>
-                    <div class="zone-btn">West Delhi</div>
+                    <div class="zone-btn active">
+                        <i class="fas fa-globe-asia"></i>
+                        All Zones
+                    </div>
+                    <div class="zone-btn">
+                        <i class="fas fa-map-marker-alt"></i>
+                        North Delhi
+                    </div>
+                    <div class="zone-btn">
+                        <i class="fas fa-map-marker-alt"></i>
+                        South Delhi
+                    </div>
+                    <div class="zone-btn">
+                        <i class="fas fa-map-marker-alt"></i>
+                        East Delhi
+                    </div>
+                    <div class="zone-btn">
+                        <i class="fas fa-map-marker-alt"></i>
+                        West Delhi
+                    </div>
                 </div>
                 <div class="chart-container">
                     <canvas id="demandChart"></canvas>
@@ -1351,11 +1579,20 @@
                     </div>
                 </div>
                 <div class="map-container">
+                    <div class="map-grid"></div>
                     <div class="map-overlay"></div>
-                    <div class="map-point"></div>
-                    <div class="map-point"></div>
-                    <div class="map-point"></div>
-                    <div class="map-point"></div>
+                    <div class="map-point">
+                        <div class="map-label">North Delhi Zone</div>
+                    </div>
+                    <div class="map-point">
+                        <div class="map-label">South Delhi Zone</div>
+                    </div>
+                    <div class="map-point">
+                        <div class="map-label">East Delhi Zone</div>
+                    </div>
+                    <div class="map-point">
+                        <div class="map-label">West Delhi Zone</div>
+                    </div>
                 </div>
                 <div class="map-legend">
                     <div class="map-legend-item">
@@ -1373,6 +1610,82 @@
                     <div class="map-legend-item">
                         <div class="legend-color legend-4"></div>
                         <span>Monitoring</span>
+                    </div>
+                </div>
+                
+                <!-- All Zones Panel -->
+                <div class="all-zones-panel">
+                    <h3 style="margin-bottom: 20px; color: white; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-layer-group"></i> All Zones Status
+                    </h3>
+                    <div class="zone-grid">
+                        <div class="zone-card">
+                            <div class="zone-header">
+                                <div class="zone-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="zone-name">North Delhi</div>
+                                <div class="zone-status status-critical">Critical</div>
+                            </div>
+                            <div class="zone-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">98.7%</div>
+                                    <div class="stat-label">Supply</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">3 Alerts</div>
+                                    <div class="stat-label">Issues</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="zone-card">
+                            <div class="zone-header">
+                                <div class="zone-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="zone-name">South Delhi</div>
+                                <div class="zone-status status-warning">Warning</div>
+                            </div>
+                            <div class="zone-stats">
+                                <div class="stat-value">99.2%</div>
+                                <div class="stat-label">Supply</div>
+                                <div class="stat-value">1 Alert</div>
+                                <div class="stat-label">Issues</div>
+                            </div>
+                        </div>
+                        
+                        <div class="zone-card">
+                            <div class="zone-header">
+                                <div class="zone-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="zone-name">East Delhi</div>
+                                <div class="zone-status status-normal">Normal</div>
+                            </div>
+                            <div class="zone-stats">
+                                <div class="stat-value">99.8%</div>
+                                <div class="stat-label">Supply</div>
+                                <div class="stat-value">0 Alerts</div>
+                                <div class="stat-label">Issues</div>
+                            </div>
+                        </div>
+                        
+                        <div class="zone-card">
+                            <div class="zone-header">
+                                <div class="zone-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="zone-name">West Delhi</div>
+                                <div class="zone-status status-normal">Normal</div>
+                            </div>
+                            <div class="zone-stats">
+                                <div class="stat-value">99.5%</div>
+                                <div class="stat-label">Supply</div>
+                                <div class="stat-value">0 Alerts</div>
+                                <div class="stat-label">Issues</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1412,6 +1725,16 @@
             });
         });
         
+        // Zone buttons
+        document.querySelectorAll('.zone-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.zone-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
         // Initialize charts
         document.addEventListener('DOMContentLoaded', function() {
             // Demand Chart
@@ -1423,15 +1746,15 @@
                     datasets: [{
                         label: 'Projected Demand (m³)',
                         data: [12000000, 12500000, 12300000, 12800000, 13000000, 11800000, 11500000],
-                        borderColor: '#1a3a63',
-                        backgroundColor: 'rgba(26, 58, 99, 0.1)',
+                        borderColor: '#4caf50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
                         borderWidth: 3,
                         tension: 0.3,
                         fill: true
                     }, {
                         label: 'Actual Demand (m³)',
                         data: [11900000, 12450000, 12200000, 12750000, 12900000, 11700000, null],
-                        borderColor: '#4caf50',
+                        borderColor: '#2196F3',
                         borderWidth: 3,
                         tension: 0.3,
                         borderDash: [5, 5]
@@ -1443,23 +1766,44 @@
                     plugins: {
                         legend: {
                             position: 'top',
+                            labels: {
+                                color: 'rgba(255,255,255,0.8)'
+                            }
                         },
                         tooltip: {
                             mode: 'index',
-                            intersect: false
+                            intersect: false,
+                            backgroundColor: 'rgba(15, 42, 74, 0.9)',
+                            titleColor: 'white',
+                            bodyColor: 'rgba(255,255,255,0.8)',
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderWidth: 1
                         }
                     },
                     scales: {
                         y: {
                             beginAtZero: false,
                             ticks: {
+                                color: 'rgba(255,255,255,0.6)',
                                 callback: function(value) {
                                     return (value / 1000000).toFixed(1) + 'M';
                                 }
                             },
+                            grid: {
+                                color: 'rgba(255,255,255,0.05)'
+                            },
                             title: {
                                 display: true,
-                                text: 'Volume (m³)'
+                                text: 'Volume (m³)',
+                                color: 'rgba(255,255,255,0.7)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255,255,255,0.6)'
+                            },
+                            grid: {
+                                color: 'rgba(255,255,255,0.05)'
                             }
                         }
                     }
